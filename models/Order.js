@@ -1,0 +1,13 @@
+const mongoose = require('mongoose');
+
+const orderSchema = new mongoose.Schema({
+    orderId: { type: String, required: true },
+    email: { type: String, required: true }, // To link with user
+    items: { type: Array, required: true },
+    total: { type: Number, required: true },
+    date: { type: String, required: true },
+    address: { type: String, required: true },
+    status: { type: String, default: 'Pending' }
+});
+
+module.exports = mongoose.model('Order', orderSchema);
