@@ -38,11 +38,15 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// Update Address
+// Update Profile (Address and Phone)
 router.post('/update-address', async (req, res) => {
     try {
-        const { email, address } = req.body;
-        const user = await User.findOneAndUpdate({ email }, { address }, { new: true });
+        const { email, address, phone } = req.body;
+        const updateData = {};
+        if (address !== undefined) updateData.address = address;
+        if (phone !== undefined) updateData.phone = phone;
+        
+        const user = await User.findOneAndUpdate({ email }, updateData, { new: true });
         if (user) {
             res.json({ success: true, user });
         } else {
