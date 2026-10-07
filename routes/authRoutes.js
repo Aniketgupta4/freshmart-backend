@@ -38,4 +38,19 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Update Address
+router.post('/update-address', async (req, res) => {
+    try {
+        const { email, address } = req.body;
+        const user = await User.findOneAndUpdate({ email }, { address }, { new: true });
+        if (user) {
+            res.json({ success: true, user });
+        } else {
+            res.status(404).json({ success: false, message: "User not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 module.exports = router;

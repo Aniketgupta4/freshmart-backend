@@ -2,11 +2,27 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product');
 
-// Get ALL products (for Admin & User, filtering happens in UI)
+// Get ALL products with Pagination and Category filtering
 router.get('/', async (req, res) => {
     try {
-        const products = await Product.find();
-        res.json(products);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 20;
+        const skip = (page - 1) * limit;
+        
+        const filter = {};
+        if (req.query.category && req.query.category !== 'All') {
+            filter.category = req.query.category;
+        }
+
+        const total = await Product.countDocuments(filter);
+        const products = await Product.find(filter).skip(skip).limit(limit);
+        
+        res.json({
+            products,
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalItems: total
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
