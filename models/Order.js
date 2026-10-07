@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
     orderId: { type: String, required: true },
     email: { type: String, required: true }, // To link with user
+    phone: { type: String, default: '' },
     items: { type: Array, required: true },
     total: { type: Number, required: true },
     discount: { type: Number, default: 0 },
@@ -14,3 +15,4 @@ const orderSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Order', orderSchema);
+
