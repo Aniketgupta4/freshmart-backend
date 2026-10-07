@@ -98,4 +98,13 @@ router.post('/init', async (req, res) => {
     }
 });
 
+router.delete('/clean/old', async (req, res) => {
+    try {
+        const result = await Product.deleteMany({ $or: [{category: null}, {category: ""}, {category: "All"}] });
+        res.json({ message: "Cleaned", result });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
