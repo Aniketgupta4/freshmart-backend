@@ -17,6 +17,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 const supportRoutes = require('./routes/supportRoutes');
+const configRoutes = require('./routes/configRoutes');
 
 // Use Routes
 app.use('/api/products', productRoutes);
@@ -25,6 +26,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/support', supportRoutes);
+app.use('/api/config', configRoutes);
 
 // Basic Route for Testing
 app.get('/', (req, res) => {
@@ -39,3 +41,4 @@ mongoose.connect(process.env.MONGO_URI)
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+

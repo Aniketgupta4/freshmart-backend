@@ -11,8 +11,10 @@ const orderSchema = new mongoose.Schema({
     address: { type: String, required: true },
     status: { type: String, default: 'Pending' },
     rating: { type: Number, default: 0 },
+    hasViewedBill: { type: Boolean, default: false },
     billUrl: { type: String, default: '' }
 });
 
 module.exports = mongoose.model('Order', orderSchema);
+
 

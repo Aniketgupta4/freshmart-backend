@@ -82,4 +82,16 @@ router.post('/rate', async (req, res) => {
     }
 });
 
+// Mark Bill as Viewed
+router.post('/view-bill', async (req, res) => {
+    try {
+        const { orderId } = req.body;
+        const order = await Order.findOneAndUpdate({ orderId }, { hasViewedBill: true }, { new: true });
+        res.json({ success: true, order });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 module.exports = router;
+
