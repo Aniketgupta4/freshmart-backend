@@ -34,4 +34,14 @@ router.get('/verify/:code', async (req, res) => {
     }
 });
 
+// DELETE coupon (Admin)
+router.delete('/:id', async (req, res) => {
+    try {
+        await Coupon.findByIdAndDelete(req.params.id);
+        res.json({ message: "Coupon deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
