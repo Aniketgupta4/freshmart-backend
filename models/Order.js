@@ -12,7 +12,8 @@ const orderSchema = new mongoose.Schema({
     status: { type: String, default: 'Pending' },
     rating: { type: Number, default: 0 },
     hasViewedBill: { type: Boolean, default: false },
-    billUrl: { type: String, default: '' }
+    billUrl: { type: String, default: '' },
+    estimatedDeliveryTime: { type: Number, default: null }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -58,11 +58,14 @@ router.get('/all', async (req, res) => {
 // Update order status (Admin)
 router.post('/update-status', async (req, res) => {
     try {
-        const { orderId, status } = req.body;
+        const { orderId, status, estimatedDeliveryTime } = req.body;
         // Mock generation of a bill PDF URL when status becomes Delivered
         let updateData = { status };
         if (status === 'Delivered') {
             updateData.billUrl = `https://freshmart.com/bills/${orderId}.pdf`;
+        }
+        if (estimatedDeliveryTime !== undefined && estimatedDeliveryTime !== null) {
+            updateData.estimatedDeliveryTime = estimatedDeliveryTime;
         }
         const order = await Order.findOneAndUpdate({ orderId }, updateData, { new: true });
         res.json({ success: true, order });
