@@ -26,7 +26,11 @@ router.post('/', async (req, res) => {
 // PUT resolve ticket (Admin)
 router.put('/:id', async (req, res) => {
     try {
-        const ticket = await Support.findByIdAndUpdate(req.params.id, { status: "Resolved" }, { new: true });
+        const updateData = { status: "Resolved" };
+        if (req.body.reply) {
+            updateData.reply = req.body.reply;
+        }
+        const ticket = await Support.findByIdAndUpdate(req.params.id, updateData, { new: true });
         res.json(ticket);
     } catch (err) {
         res.status(500).json({ error: err.message });

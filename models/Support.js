@@ -5,6 +5,7 @@ const SupportSchema = new mongoose.Schema({
     subject: { type: String, required: true },
     message: { type: String, required: true },
     status: { type: String, default: "Pending" }, // Pending, Resolved
+    reply: { type: String, default: null }, // Admin Reply
     date: { type: String, required: true }
 });
 
