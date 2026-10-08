@@ -75,6 +75,23 @@ router.post('/toggle/:id', async (req, res) => {
     }
 });
 
+
+// Update product price (Admin)
+router.put('/update/:id', async (req, res) => {
+    try {
+        const product = await Product.findOne({ id: parseInt(req.params.id) });
+        if(product) {
+            product.price = req.body.price;
+            await product.save();
+            res.json({ success: true, product });
+        } else {
+            res.status(404).json({ success: false, message: "Not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+});
+
 // Insert dummy data if empty
 router.post('/init', async (req, res) => {
     try {
