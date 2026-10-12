@@ -1,10 +1,36 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const User = require('../models/User');
 
 // Place an order
 router.post('/place', async (req, res) => {
     try {
+        const { email } = req.body;
+        if (email) {
+            const user = await User.findOne({ email: email.toLowerCase().trim() });
+            if (user && user.isBlocked) {
+                const now = new Date();
+                if (user.blockedUntil && now >= new Date(user.blockedUntil)) {
+                    // Temporary block has expired -> auto unblock
+                    user.isBlocked = false;
+                    user.blockedUntil = null;
+                    user.blockReason = '';
+                    await user.save();
+                } else {
+                    const blockMsg = user.blockedUntil
+                        ? `Aapka account suspended/blocked hai till ${new Date(user.blockedUntil).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}. Reason: ${user.blockReason || 'Order policy violation'}`
+                        : `Aapka account administration dwara permanently suspended hai. Reason: ${user.blockReason || 'Order policy violation'}`;
+                    return res.status(403).json({
+                        success: false,
+                        isBlocked: true,
+                        blockedUntil: user.blockedUntil,
+                        message: blockMsg
+                    });
+                }
+            }
+        }
+
         const order = new Order(req.body);
         await order.save();
         res.status(201).json({ success: true, message: "Order Placed", order });

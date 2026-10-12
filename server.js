@@ -18,6 +18,7 @@ const categoryRoutes = require('./routes/categoryRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 const supportRoutes = require('./routes/supportRoutes');
 const configRoutes = require('./routes/configRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Use Routes
 app.use('/api/products', productRoutes);
@@ -27,6 +28,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/support', supportRoutes);
 app.use('/api/config', configRoutes);
+app.use('/api/users', userRoutes);
 
 // Basic Route for Testing
 app.get('/', (req, res) => {

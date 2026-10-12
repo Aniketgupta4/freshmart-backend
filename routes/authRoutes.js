@@ -29,6 +29,13 @@ router.post('/login', async (req, res) => {
         
         const user = await User.findOne({ email, password });
         if (user) {
+            // Check if block has expired
+            if (user.isBlocked && user.blockedUntil && new Date() >= new Date(user.blockedUntil)) {
+                user.isBlocked = false;
+                user.blockedUntil = null;
+                user.blockReason = '';
+                await user.save();
+            }
             res.json({ success: true, user });
         } else {
             res.status(401).json({ success: false, message: "Invalid credentials" });
